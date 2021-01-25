@@ -2,7 +2,6 @@ package gr.hua.entity;
 
 import java.util.Date;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Employee {
@@ -34,6 +33,22 @@ public class Employee {
 		this.birth_date = birth_date;
 		this.hire_date = hire_date;
 		this.works_since = works_since;
+	}
+
+	public Employee(int id, String fname, String lname, String email, String phone, String address, Date birth_date,
+			Date hire_date, Date works_since, Department department, User user) {
+		super();
+		this.id = id;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
+		this.birth_date = birth_date;
+		this.hire_date = hire_date;
+		this.works_since = works_since;
+		this.department = department;
+		this.user = user;
 	}
 
 	public int getId() {
