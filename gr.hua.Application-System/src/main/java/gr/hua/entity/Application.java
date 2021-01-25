@@ -13,14 +13,12 @@ public class Application {
 	private Date last_date;
 	private Blob req_papers;
 	private Boolean super_sig;
-	private Boolean pd_sig;
 	private Boolean mgr_sig;
-	private int emp_id;
-	
+
 	public Application() {
-		
+
 	}
-	
+
 	public Application(int id, String type, String category, int days, Date start_date, Date last_date, Blob req_papers,
 			Boolean super_sig, Boolean mgr_sig) {
 		super();
@@ -33,22 +31,6 @@ public class Application {
 		this.req_papers = req_papers;
 		this.super_sig = super_sig;
 		this.mgr_sig = mgr_sig;
-	}
-
-	public Application(int id, String type, String category, int days, Date start_date, Date last_date, Blob req_papers,
-			Boolean super_sig, Boolean pd_sig, Boolean mgr_sig, int emp_id) {
-		super();
-		this.id = id;
-		this.type = type;
-		this.category = category;
-		this.days = days;
-		this.start_date = start_date;
-		this.last_date = last_date;
-		this.req_papers = req_papers;
-		this.super_sig = super_sig;
-		this.pd_sig = pd_sig;
-		this.mgr_sig = mgr_sig;
-		this.emp_id = emp_id;
 	}
 
 	public int getId() {
@@ -67,7 +49,6 @@ public class Application {
 		this.type = type;
 	}
 
-	
 	public String getCategory() {
 		return category;
 	}
@@ -116,28 +97,12 @@ public class Application {
 		this.super_sig = super_sig;
 	}
 
-	public Boolean getPd_sig() {
-		return pd_sig;
-	}
-
-	public void setPd_sig(Boolean pd_sig) {
-		this.pd_sig = pd_sig;
-	}
-
 	public Boolean getMgr_sig() {
 		return mgr_sig;
 	}
 
 	public void setMgr_sig(Boolean mgr_sig) {
 		this.mgr_sig = mgr_sig;
-	}
-
-	public int getEmp_id() {
-		return emp_id;
-	}
-
-	public void setEmp_id(int emp_id) {
-		this.emp_id = emp_id;
 	}
 
 }

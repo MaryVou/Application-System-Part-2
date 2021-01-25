@@ -128,7 +128,8 @@ public class RequestApi {
 				while ((responseLine = br.readLine()) != null) {
 					response.append(responseLine.trim());
 				}
-				return new ObjectMapper().readValue(response.toString(), entity);
+				if(entity!=null)
+					return new ObjectMapper().readValue(response.toString(), entity);
 			}
 		}
 		if (code == 401) {

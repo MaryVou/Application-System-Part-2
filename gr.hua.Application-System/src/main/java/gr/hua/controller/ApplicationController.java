@@ -2,6 +2,8 @@ package gr.hua.controller;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +29,21 @@ public class ApplicationController {
 	
 	@PostMapping("/applications/new")
 	public void processApplicationForm(@RequestBody Application application) {
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");  
+		String formattedStartDate = dateFormat.format(application.getStart_date());
+		String formattedLastDate = dateFormat.format(application.getLast_date());
+		
 		String applicationJson = "{\"type\":\""
 								+ application.getType()+"\","
 								+ "\"category\":\""
 								+ application.getCategory()+"\","
 								+ "\"start_date\":\""
-								+ application.getStart_date()+"\","
+								+ formattedStartDate+"\","
 								+ "\"last_date\":\""
-								+ application.getLast_date()+"\"}";
+								+ formattedLastDate+"\"}";
 		try {
-			requestApi.postRequest("http://localhost:8080/api/applications/new", applicationJson, Application.class);
+			requestApi.postRequest("http://localhost:8080/api/applications/new", applicationJson, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
