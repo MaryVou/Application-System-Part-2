@@ -16,6 +16,24 @@ public class Application {
 	private Boolean pd_sig;
 	private Boolean mgr_sig;
 	private int emp_id;
+	
+	public Application() {
+		
+	}
+	
+	public Application(int id, String type, String category, int days, Date start_date, Date last_date, Blob req_papers,
+			Boolean super_sig, Boolean mgr_sig) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.category = category;
+		this.days = days;
+		this.start_date = start_date;
+		this.last_date = last_date;
+		this.req_papers = req_papers;
+		this.super_sig = super_sig;
+		this.mgr_sig = mgr_sig;
+	}
 
 	public Application(int id, String type, String category, int days, Date start_date, Date last_date, Blob req_papers,
 			Boolean super_sig, Boolean pd_sig, Boolean mgr_sig, int emp_id) {

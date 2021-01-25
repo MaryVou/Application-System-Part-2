@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -56,7 +57,42 @@ public class RequestApi {
 				while ((responseLine = br.readLine()) != null) {
 					response.append(responseLine.trim());
 				}
-				return new ObjectMapper().readValue(response.toString(), entity);
+				if(entity!=null)
+					return new ObjectMapper().readValue(response.toString(), entity);
+			}
+		}
+		if (code == 401) {
+			System.out.println("User not authorized");
+		}
+		return null;
+	}
+	
+	public List<Application> getRequestMultiple(String GetUrl, Class entity)
+			throws IOException, ParseException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+
+		HttpURLConnection con = null;
+
+		URL url = new URL(GetUrl);
+		con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("GET");
+		con.setRequestProperty("Content-Type", "application/json");
+		con.setRequestProperty("Accept", "application/json");
+		con.setRequestProperty("Authorization", "Bearer " + getJwt().getToken());
+		con.setDoOutput(true);
+
+		int code = con.getResponseCode();
+
+		if (code == 200) {
+
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
+				StringBuilder response = new StringBuilder();
+				String responseLine = null;
+				while ((responseLine = br.readLine()) != null) {
+					response.append(responseLine.trim());
+				}
+				ObjectMapper mapper = new ObjectMapper();
+				return mapper.readValue(response.toString(), mapper.getTypeFactory().constructCollectionType(List.class, entity));
 			}
 		}
 		if (code == 401) {
