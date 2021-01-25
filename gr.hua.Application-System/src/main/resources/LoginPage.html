@@ -27,10 +27,11 @@
             function check(form){
 
               if(form.Uname.value == "Melli" && form.Pass.value == "pass123"){
-              	
+            	  window.location.href ='/Welcomepage';
                   return true;
               }else{
                   alert("Error Password or Username")
+                  window.location.reload();
                   return false;
               }
             }
