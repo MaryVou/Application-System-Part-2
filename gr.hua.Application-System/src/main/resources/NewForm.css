@@ -1,0 +1,36 @@
+@charset "UTF-8";
+body{
+	text-align:center;
+    margin: 0;  
+    padding: 100px;  
+    background-color:#B3DA5E;  
+    font-family: Arial, Helvetica, sans-serif; 
+}
+.menu{  
+        width: 300px;   
+        margin: auto;  
+        margin: 20 0 0 450px;  
+        padding: 150px;  
+        background:#E7E690;    
+        border: 1px solid #064714;
+        font-family: Arial, Helvetica, sans-serif; 
+        border-radius:700px;
+          
+} 
+
+.myButton {
+	background-color:light-grey;
+	border-radius:40px;
+	display:inline-block;
+	cursor:pointer;
+	font-size:15px;
+	padding:6px 10px;
+	text-decoration:none;
+}
+.myButton:hover {
+	background-color:#B3DA5E;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
