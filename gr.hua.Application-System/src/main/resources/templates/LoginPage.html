@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head> 
+  
+	<link rel="stylesheet" th:href="@{/css/Backgroundsite.css}">
+	<meta charset="UTF-8">
+	<title>Login page</title>
+</head>
+<body>
+	
+	<h2>Welcome</h2><br> 
+	<p th:if="${loginError}" class="error">Wrong username or password</p>   
+    <div class="login">   
+	    <form id="login" action="#" method="post" th:action="@{/login}" th:object="${user}"> 
+        
+	        <label><b>User Name</b></label>    
+	        <input for="username" type="text" name="Uname" id="Uname" placeholder="Username" th:field="*{username}" th:required="required">    
+	        <br><br> 
+            
+	        <label><b>Password</b></label>    
+	        <input for="password" type="password" name="Pass" id="Pass" placeholder="Password" th:field="*{password}" th:required="required">    
+	        <br><br>   
+            
+	        <input type="submit" name="log" id="log" value="Log In Here">
+	        <br><br>
+	    </form>
+	</div>
+
+</body>
+</html>

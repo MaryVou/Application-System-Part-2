@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" th:href="@{/css/NewForm.css}"/>
+<title>Employee Form</title>
+
+</head>
+<body>
+<div th:if="${not_authorized == true}">
+	<h1>You have to login to view this page!</h1>
+</div>
+<div th:if="${not_authorized == false}">
+	<h1><a href="/logout" style="text-decoration: none; color:#D84424;font-size: 15px; text-align:right;">&#10060 LOGOUT</a></h1>
+	<div align =  "center">
+        
+        <div class="menu">
+        <h2 style="color:#064714;"> Employee Form </h1>
+        
+        <p th:if="${error}">Something went wrong! Please try again!</p>  
+		
+		<form th:action="@{/applications/new}" method = "post" th:object="${app}">
+			<table>
+            	<br>
+					
+				<tr for="typeofpermit" style = "font-size: 15px;"> <td>TYPE OF WORK PERMIT : </td>
+				<td> <select name="typeofpermit" id="typeofpermit" th:field="*{type}" th:required="required">
+				  <option value="regular">REGULAR</option>
+				  <option value="special">SPECIAL PURPOSE</option>
+				  <option value="sickleave">SICK LEAVE</option>
+				  <option value="strike">STRIKE</option>
+				</select> </td></tr>
+				<tr style = "font-size: 15px;"> <td> BEGIN DATE : </td> <td style = "font-size: 25px;"> <input type = "date" id="start" name="firstday" value="2020-01-01" th:attr="min=${localdate},max=${lastDay}" th:field="*{start_date}" th:required="required"> </td> </tr>	
+				<tr style = "font-size: 15px;"> <td> LAST DATE : </td> <td style = "font-size: 25px;"> <input type = "date" id="start" name="lastday" value="2020-01-01" th:attr="min=${localdate},max=${lastDay}" th:field="*{last_date}" th:required="required"> </td> </tr>
+				<tr> <td> </td> </tr>
+				<tr style = "font-size: 15px;"> <td> <input class="myButton" type = "submit" value = "Confirm"> </td> </tr>
+			</table>
+		</form>
+        </div>
+	</div>
+</div>
+</body>
+</html>

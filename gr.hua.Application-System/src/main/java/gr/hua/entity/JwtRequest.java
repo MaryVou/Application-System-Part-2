@@ -21,4 +21,14 @@ public class JwtRequest {
 		this.password = password;
 	}
 
+	public JwtRequest(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
+	
+	public JwtRequest() {
+		
+	}
+
 }

@@ -4,31 +4,43 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 
 import gr.hua.api.RequestApi;
 import gr.hua.entity.Application;
 import net.minidev.json.parser.ParseException;
 
-@RestController
+@Controller
 public class ApplicationController {
 	
 	@Autowired
 	private RequestApi requestApi;
 	
 	@GetMapping("/applications/new")
-	public void showApplicationForm() {
-		
+	public String showApplicationForm(Model model) {
+		if(requestApi.getJwt()==null) 
+			model.addAttribute("not_authorized", true);
+		else
+			model.addAttribute("not_authorized", false);
+		model.addAttribute("app", new Application());
+		model.addAttribute("localDate", LocalDate.now());
+		model.addAttribute("lastDay", LocalDate.now().with(lastDayOfYear()));
+		return "EmpForm";
 	}
 	
 	@PostMapping("/applications/new")
-	public void processApplicationForm(@RequestBody Application application) {
+	public String processApplicationForm(@ModelAttribute Application application) {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");  
 		String formattedStartDate = dateFormat.format(application.getStart_date());
@@ -43,49 +55,52 @@ public class ApplicationController {
 								+ "\"last_date\":\""
 								+ formattedLastDate+"\"}";
 		try {
-			requestApi.postRequest("http://localhost:8080/api/applications/new", applicationJson, null);
+			int code = (int) requestApi.postRequest("http://localhost:8080/api/applications/new", applicationJson, null, "status");
+			if(code!=200)
+				return "redirect:/pplications/new-error";
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		return "redirect:/index";
+	}
+	
+	@GetMapping("/applications/new-error")
+	public String showApplicationFormWithError(Model model) {
+		if(requestApi.getJwt()==null) 
+			model.addAttribute("not_authorized", true);
+		else
+			model.addAttribute("not_authorized", false);
+		model.addAttribute("error",true);
+		model.addAttribute("app", new Application());
+		model.addAttribute("localDate", LocalDate.now());
+		model.addAttribute("lastDay", LocalDate.now().with(lastDayOfYear()));
+		return "EmpForm";
 	}
 	
 	@GetMapping("/applications/view")
-	public void showApplications() {
+	public String showApplications() {
 		try {
-			List<Application> applications = requestApi.getRequestMultiple("http://localhost:8080/api/applications/view", Application.class);
-			for(int i=0;i<applications.size();i++) {
-				System.out.println(applications.get(i).getId());
-				System.out.println(applications.get(i).getCategory());
-				System.out.println(applications.get(i).getDays());
-				System.out.println(applications.get(i).getStart_date());
-				System.out.println(applications.get(i).getType());
-			}
+			List<Object> applications = requestApi.getRequestMultiple("http://localhost:8080/api/applications/view", Application.class);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return "";
 	}
+
 }

@@ -3,13 +3,18 @@ package gr.hua.entity;
 import java.sql.Blob;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 public class Application {
 
 	private int id;
 	private String type;
 	private String category;
 	private int days;
+	@DateTimeFormat(iso = ISO.DATE)
 	private Date start_date;
+	@DateTimeFormat(iso = ISO.DATE)
 	private Date last_date;
 	private Blob req_papers;
 	private Boolean super_sig;

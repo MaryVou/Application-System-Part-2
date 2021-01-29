@@ -67,7 +67,7 @@ public class RequestApi {
 		return null;
 	}
 	
-	public List<Application> getRequestMultiple(String GetUrl, Class entity)
+	public List<Object> getRequestMultiple(String GetUrl, Class entity)
 			throws IOException, ParseException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
@@ -101,7 +101,7 @@ public class RequestApi {
 		return null;
 	}
 
-	public Object postRequest(String postUrl, String jsonInputString, Class entity) throws IOException, ParseException {
+	public Object postRequest(String postUrl, String jsonInputString, Class entity, String returnValue) throws IOException, ParseException {
 
 		HttpURLConnection con = null;
 
@@ -128,8 +128,12 @@ public class RequestApi {
 				while ((responseLine = br.readLine()) != null) {
 					response.append(responseLine.trim());
 				}
-				if(entity!=null)
-					return new ObjectMapper().readValue(response.toString(), entity);
+				if(returnValue.equals("entity")) {
+					if(entity!=null)
+						return new ObjectMapper().readValue(response.toString(), entity);
+				}if(returnValue.equals("status")) {
+					return code;
+				}
 			}
 		}
 		if (code == 401) {

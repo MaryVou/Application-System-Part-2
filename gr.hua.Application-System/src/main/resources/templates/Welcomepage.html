@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" th:href="@{/css/Menuview.css}"/>
+<title>Main menu</title>
+</head>
+
+<body> 
+	<div th:if="${not_authorized == true}">
+		<h1>You have to login to view this page!</h1>
+	</div>
+	<div th:if="${not_authorized == false}"> 
+	<h1><a href="/logout" style="text-decoration: none; color:#D84424;font-size: 15px; text-align:right;">&#10060 LOGOUT</a></h1>
+	<br>    
+    <div class="menu">    
+        
+	        <label><b><a href="/applications/new" class="myButton" style = "font-size: 30px;color:#064714;" >New Form</a></b></label>      
+	        <br>
+            
+	        <label><b><a href="/applications/view" class="myButton" style = "font-size: 30px;color:#064714;" >My Applications</a></b></label>  
+            <br>
+            
+            <label><b><a href="/contacts" class="myButton" style = "font-size: 30px;color:#064714;" >Contact details</a></b></label>
+		
+	</div>
+	</div>
+</body>
+
+</html>
