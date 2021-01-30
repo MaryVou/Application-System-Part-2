@@ -32,6 +32,7 @@
 				</select> </td></tr>
 				<tr style = "font-size: 15px;"> <td> BEGIN DATE : </td> <td style = "font-size: 25px;"> <input type = "date" id="start" name="firstday" value="2020-01-01" th:attr="min=${localdate},max=${lastDay}" th:field="*{start_date}" th:required="required"> </td> </tr>	
 				<tr style = "font-size: 15px;"> <td> LAST DATE : </td> <td style = "font-size: 25px;"> <input type = "date" id="start" name="lastday" value="2020-01-01" th:attr="min=${localdate},max=${lastDay}" th:field="*{last_date}" th:required="required"> </td> </tr>
+				<tr  style = "font-size: 15px;"> <td> REQUESTED PAPER : </td><td> <input type="file" name="pic" id="pic" accept="image/gif, image/jpeg" /> </td> </tr>
 				<tr> <td> </td> </tr>
 				<tr style = "font-size: 15px;"> <td> <input class="myButton" type = "submit" value = "Confirm"> </td> </tr>
 			</table>
