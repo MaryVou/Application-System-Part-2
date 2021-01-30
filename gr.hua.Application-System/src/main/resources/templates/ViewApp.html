@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/Appview.css}"/>
+<title>Employee Form</title>
+
+</head>
+<body>	
+		<h1><a href="/logout" style="text-decoration: none; color:#D84424;font-size: 15px; text-align:right;">&#10060 LOGOUT</a></h1>
+		<div align="center">
+        	<div class="appview">
+          		<h2 style="color:#064714;">My applications</h2>
+
+                <form action = "ViewApplications" method = "post">
+                    <div th:switch="${allApplications}">
+                        <h3 th:case="null"> No applications yet ! </h3>
+
+                        <div th:case="*">
+                            <table class="tableproperties">
+                                <thead>
+                                    <tr style="color:#064714;">
+                                        <th>Type of work permit</th>
+                                        <th>Begin date</th>
+                                        <th>Last date</th>
+                                        <th>Requested papers</th>
+                                    </tr>
+                                </thead>
+                                <tbody style = "font-size: 13px;">
+                                    <tr th:each="app : ${allApplications}">
+                                        <td th:text="${app.type}"></td>
+                                        <td th:text="${app.start_date}"></td>
+                                        <td th:text="${app.last_date}"></td>
+                                        <td th:text="${app.rew_papers}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                          </div>
+                      </div>
+                  </form>
+				</div>
+              </div>
+
+</body>
+</html>
