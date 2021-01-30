@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 
-<link rel="stylesheet" type="text/css" th:href="@{/css/Conact.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/Contact.css}"/>
 <title>Contact details</title>
 
 </head>
@@ -17,7 +17,7 @@
         	<div class="appview">
           		<h2 style="color:#064714;">Contact Details</h2>
 					<form action = "ViewApplications" method = "post">
-                    <div th:switch="${allApplications}">
+                    <div th:switch="${contacts}">
                         <h3 th:case="null"> No details yet ! </h3>
 
                         <div th:case="*">
@@ -31,11 +31,11 @@
                                     </tr>
                                 </thead>
                                 <tbody style = "font-size: 13px;">
-                                    <tr th:each="app : ${allApplications}">
-                                        <td th:text="${id.firstname}"></td>
-                                        <td th:text="${id.lastname}"></td>
-                                        <td th:text="${id.email}"></td>
-                                        <td th:text="${id.phonenumber}"></td>
+                                    <tr th:each="con : ${contacts}">
+                                        <td th:text="${con.fname}"></td>
+                                        <td th:text="${con.lname}"></td>
+                                        <td th:text="${con.email}"></td>
+                                        <td th:text="${con.phone}"></td>
                                     </tr>
                                 </tbody>
                             </table>

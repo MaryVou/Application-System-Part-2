@@ -23,17 +23,25 @@ public class EmployeeController {
 	
 	@GetMapping("/profile")
 	public String retrieveProfile(Model model) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		if(requestApi.getJwt()==null) 
+			model.addAttribute("not_authorized", true);
+		else
+			model.addAttribute("not_authorized", false);
 		Employee profile = (Employee) requestApi.getRequest("http://localhost:8080/api/employees/profile", Employee.class);
 		//if profile == null -> error page
 		System.out.println(profile.toString());
-		return profile.toString();
+		return "";
 	}
 	
-	@GetMapping("/contact")
+	@GetMapping("/contacts")
 	public String retrieveContacts(Model model) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		if(requestApi.getJwt()==null) 
+			model.addAttribute("not_authorized", true);
+		else
+			model.addAttribute("not_authorized", false);
 		List<Object> contacts = requestApi.getRequestMultiple("http://localhost:8080/api/employees/contact", Contact.class);
-		//if profile == null -> error page
 		System.out.println(contacts.toString());
-		return contacts.toString();
+		model.addAttribute("contacts", contacts);
+		return "Contact";
 	}
 }

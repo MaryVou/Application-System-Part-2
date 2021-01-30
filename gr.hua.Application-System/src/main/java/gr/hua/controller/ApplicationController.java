@@ -81,6 +81,10 @@ public class ApplicationController {
 	
 	@GetMapping("/applications/view")
 	public String showApplications(Model model) {
+		if(requestApi.getJwt()==null) 
+			model.addAttribute("not_authorized", true);
+		else
+			model.addAttribute("not_authorized", false);
 		try {
 			List<Object> applications = requestApi.getRequestMultiple("http://localhost:8080/api/applications/view", Application.class);
 			model.addAttribute("allApplications", applications);
