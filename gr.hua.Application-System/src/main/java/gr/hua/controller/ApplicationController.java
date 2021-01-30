@@ -80,9 +80,10 @@ public class ApplicationController {
 	}
 	
 	@GetMapping("/applications/view")
-	public String showApplications() {
+	public String showApplications(Model model) {
 		try {
 			List<Object> applications = requestApi.getRequestMultiple("http://localhost:8080/api/applications/view", Application.class);
+			model.addAttribute("allApplications", applications);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -100,7 +101,7 @@ public class ApplicationController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return "ViewApp";
 	}
 
 }
