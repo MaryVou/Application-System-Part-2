@@ -25,6 +25,7 @@
                                 <thead>
                                     <tr style="color:#064714;">
                                         <th>Type of work permit</th>
+                                        <th>Category</th>
                                         <th>Begin date</th>
                                         <th>Last date</th>
                                         <th>Requested papers</th>
@@ -33,6 +34,7 @@
                                 <tbody style = "font-size: 13px;">
                                     <tr th:each="app : ${allApplications}">
                                         <td th:text="${app.type}"></td>
+                                        <td th:text="${app.category}"></td>
                                         <td th:text="${app.start_date}"></td>
                                         <td th:text="${app.last_date}"></td>
                                         <td th:text="${app.req_papers}"></td>

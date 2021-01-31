@@ -132,7 +132,7 @@ public class RequestApi {
 					if(entity!=null)
 						return new ObjectMapper().readValue(response.toString(), entity);
 				}if(returnValue.equals("status")) {
-					return code;
+					return response.toString();
 				}
 			}
 		}

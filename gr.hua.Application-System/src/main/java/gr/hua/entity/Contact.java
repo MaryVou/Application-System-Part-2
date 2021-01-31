@@ -1,5 +1,8 @@
 package gr.hua.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Contact {
 	
 	private String fname;

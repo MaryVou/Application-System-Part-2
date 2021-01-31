@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" th:href="@{/css/Profile.css}"/>
-<title>Insert title here</title>
+<title>My Profile</title>
+<script>
+  function show(){
+  	document.getElementById('update').style.visibility = "visible";
+  }
+</script>
 </head>
 <body>
 <div th:if="${not_authorized == true}">
@@ -15,7 +20,6 @@
         	<div class="appview">
           		<h2 style="color:#064714;">My profile</h2>
 					
-					<form th:action="@{/profile}" method = "post" th:object="${pr}">
 						<table>
 			            	<br>
 								
@@ -26,47 +30,33 @@
 							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Phone Number : </td> <td th:text="${pr.phone}"></td></tr>
 							<tr for="typeofpermit" style = "font-size: 15px;"> <td>E-mail : </td> <td th:text="${pr.email}"></td></tr>
 							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Hire-date : </td> <td th:text="${pr.hire_date}"></td></tr>
-							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Work Since : </td> <td th:text="${pr.work_since}"></td></tr>
-							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Department : </td> <td th:text="${pr.dep_name}"></td></tr>
-							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Username : </td> <td th:text="${pr.username}"></td></tr>
-							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Password : </td> <td th:text="${pr.password}"></td></tr>
+							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Work Since : </td> <td th:text="${pr.works_since}"></td></tr>
+							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Department : </td> <td th:text="${pr.department.name}"></td></tr>
+							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Username : </td> <td th:text="${pr.user.username}"></td></tr>
 							
-							<tr style = "font-size: 15px;"> <td> <input class="myButton" type = "submit" value = "Update details"> </td> </tr>
+							<tr style = "font-size: 15px;"> <td> <input class="myButton" type = "submit" value = "Update details" onClick='javascript:show();'> </td> </tr>
 						</table>
-						<table id="update" style="visibility:hidden";>
+						<form th:action="@{/profile}" method = "post" th:object="${updates}">
+						<table id="update" style="visibility:hidden;">
 							<br>
 							
-							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Address : </td> <td><input for="address" type="text" name="address" id="address" placeholder="address" th:field="*{address}" </td></tr>
-							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Phone Number : </td> <input for="phone" type="text" name="phone" id="phone" placeholder="phone" th:field="*{phone}" </td></tr>
-							<tr for="typeofpermit" style = "font-size: 15px;"> <td>Password : </td> <td><input for="password" type="text" name="password" id="password" placeholder="password" th:field="*{password}"</td></tr>
+							<tr for="typeofpermit" style = "font-size: 15px;"> 
+								<td>Address : </td> 
+								<td><input for="address" type="text" name="address" id="address" placeholder="new address" th:field="*{address}" ></td>
+							</tr>
+							<tr for="typeofpermit" style = "font-size: 15px;"> 
+								<td>Phone Number : </td>
+								<td> <input for="phone" type="text" name="phone" id="phone" placeholder="new phone" th:field="*{phone}"> </td></tr>
+							<tr for="typeofpermit" style = "font-size: 15px;"> 
+								<td>Password : </td> 
+								<td><input for="password" type="text" name="password" id="password" placeholder="new password" th:field="*{password}"></td></tr>
 							
 							<tr style = "font-size: 15px;"> <td> <input class="myButton" type = "submit" value = "Submit"> </td> </tr>
 						
 						</table>
-					</form>
-					
+						</form>
 				</div>
               </div>
 </div>
-<script type="text/javascript">
-
-   	function changeFunc() {
-    	var selectBox = document.getElementById("selectBox");
-    	var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-   		if(selectedValue=="SPECIAL PURPOSE"){
-   			return true;
-   		}
-   		return false;
-   	}
-   	
-	function show(){
-		if(changeFunc()==true){
-			document.getElementById("update").style.visibility = "visible";
-		}else{
-			document.getElementById("update").style.visibility = "hidden";
-		}
-	}
-
-</script>
 </body>
 </html>

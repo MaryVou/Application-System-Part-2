@@ -1,10 +1,16 @@
 package gr.hua.entity;
 
 import java.sql.Blob;
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 public class Application {
 
@@ -13,9 +19,13 @@ public class Application {
 	private String category;
 	private int days;
 	@DateTimeFormat(iso = ISO.DATE)
-	private Date start_date;
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
+	private LocalDate start_date;
 	@DateTimeFormat(iso = ISO.DATE)
-	private Date last_date;
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
+	private LocalDate last_date;
 	private Blob req_papers;
 	private Boolean super_sig;
 	private Boolean mgr_sig;
@@ -24,8 +34,8 @@ public class Application {
 
 	}
 
-	public Application(int id, String type, String category, int days, Date start_date, Date last_date, Blob req_papers,
-			Boolean super_sig, Boolean mgr_sig) {
+	public Application(int id, String type, String category, int days, LocalDate start_date, LocalDate last_date,
+			Blob req_papers, Boolean super_sig, Boolean mgr_sig) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -70,19 +80,19 @@ public class Application {
 		this.days = days;
 	}
 
-	public Date getStart_date() {
+	public LocalDate getStart_date() {
 		return start_date;
 	}
 
-	public void setStart_date(Date start_date) {
+	public void setStart_date(LocalDate start_date) {
 		this.start_date = start_date;
 	}
 
-	public Date getLast_date() {
+	public LocalDate getLast_date() {
 		return last_date;
 	}
 
-	public void setLast_date(Date last_date) {
+	public void setLast_date(LocalDate last_date) {
 		this.last_date = last_date;
 	}
 

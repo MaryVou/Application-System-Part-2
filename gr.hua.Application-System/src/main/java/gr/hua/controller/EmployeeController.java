@@ -8,9 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.hua.api.RequestApi;
+import gr.hua.entity.ChangeableInfo;
 import gr.hua.entity.Contact;
 import gr.hua.entity.Employee;
 import net.minidev.json.parser.ParseException;
@@ -28,9 +33,21 @@ public class EmployeeController {
 		else
 			model.addAttribute("not_authorized", false);
 		Employee profile = (Employee) requestApi.getRequest("http://localhost:8080/api/employees/profile", Employee.class);
+		model.addAttribute("pr", profile);
+		model.addAttribute("updates", new ChangeableInfo());
 		//if profile == null -> error page
-		System.out.println(profile.toString());
-		return "";
+		return "Profile";
+	}
+	
+	@PostMapping("/profile")
+	public String updatePhone(@ModelAttribute ChangeableInfo updates) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		if(!updates.getPhone().equals(""))
+			requestApi.postRequest("http://localhost:8080/api/employees/profile/update-phone", "{\"phone\":\""+updates.getPhone()+"\"}" ,null, "status");
+		if(!updates.getAddress().equals(""))
+			requestApi.postRequest("http://localhost:8080/api/employees/profile/update-address", "{\"address\":\""+updates.getAddress()+"\"}" ,null, "status");
+		if(!updates.getPassword().equals(""))
+			requestApi.postRequest("http://localhost:8080/api/employees/profile/update-password", "{\"password\":\""+updates.getPassword()+"\"}" ,null, "status");
+		return "redirect:/profile";
 	}
 	
 	@GetMapping("/contacts")
@@ -40,7 +57,6 @@ public class EmployeeController {
 		else
 			model.addAttribute("not_authorized", false);
 		List<Object> contacts = requestApi.getRequestMultiple("http://localhost:8080/api/employees/contact", Contact.class);
-		System.out.println(contacts.toString());
 		model.addAttribute("contacts", contacts);
 		return "Contact";
 	}

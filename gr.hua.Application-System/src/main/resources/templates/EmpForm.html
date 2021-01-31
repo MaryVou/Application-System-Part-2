@@ -24,13 +24,15 @@
             	<br>
 					
 				<tr for="typeofpermit" style = "font-size: 15px;"> <td>TYPE OF WORK PERMIT : </td>
-				<td> <select name="typeofpermit" th:field="*{type}" th:required="required" id="selectBox" onchange="changeFunc();">
+				<td> <select name="typeofpermit" th:field="*{type}" th:required="required">
 				  <option value="regular">REGULAR</option>
 				  <option value="special">SPECIAL PURPOSE</option>
 				  <option value="sickleave">SICK LEAVE</option>
 				  <option value="strike">STRIKE</option>
 				</select> </td></tr>
-				<tr id="categoryField" style = "font-size: 15px;visibility:hidden;"> <td>CATEGORY: </td><td> <select name="typeofpermit" th:field="*{type}" th:required="required">
+				<p>If you choose special purpose please choose the category of your permit:</p> 
+				<tr id="categoryField" style = "font-size: 15px;"> <td>CATEGORY: </td><td> <select name="typeofpermit" th:field="*{category}">
+				  <option value=""></option>
 				  <option value="regular">PARENTAL</option>
 				  <option value="special">STUDENT</option>
 				  <option value="sickleave">AGRICULTURAL</option>
@@ -45,27 +47,6 @@
         </div>
 	</div>
 </div>
-
-<script type="text/javascript">
-
-   	function changeFunc() {
-    	var selectBox = document.getElementById("selectBox");
-    	var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-   		if(selectedValue=="SPECIAL PURPOSE"){
-   			return true;
-   		}
-   		return false;
-   	}
-   	
-	function show(){
-		if(changeFunc()==true){
-			document.getElementById("categoryField").style.visibility = "visible";
-		}else{
-			document.getElementById("categoryField").style.visibility = "hidden";
-		}
-	}
-
-</script>
   
 </body>
 </html>

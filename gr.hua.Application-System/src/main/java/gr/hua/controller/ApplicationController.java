@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,22 +44,30 @@ public class ApplicationController {
 	@PostMapping("/applications/new")
 	public String processApplicationForm(@ModelAttribute Application application) {
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");  
-		String formattedStartDate = dateFormat.format(application.getStart_date());
-		String formattedLastDate = dateFormat.format(application.getLast_date());
+		String applicationJson = null;
 		
-		String applicationJson = "{\"type\":\""
-								+ application.getType()+"\","
+		if(application.getCategory()!=null) {
+			applicationJson = "{\"type\":\""
+								+ application.getType().toLowerCase()+"\","
 								+ "\"category\":\""
-								+ application.getCategory()+"\","
+								+ application.getCategory().toLowerCase()+"\","
 								+ "\"start_date\":\""
-								+ formattedStartDate+"\","
+								+ application.getStart_date()+"\","
 								+ "\"last_date\":\""
-								+ formattedLastDate+"\"}";
+								+ application.getLast_date()+"\"}";
+		}
+		else {
+			applicationJson = "{\"type\":\""
+					+ application.getType().toLowerCase()+"\","
+					+ "\"start_date\":\""
+					+ application.getStart_date()+"\","
+					+ "\"last_date\":\""
+					+ application.getLast_date()+"\"}";
+		}
 		try {
-			int code = (int) requestApi.postRequest("http://localhost:8080/api/applications/new", applicationJson, null, "status");
-			if(code!=200)
-				return "redirect:/pplications/new-error";
+			String code = (String) requestApi.postRequest("http://localhost:8080/api/applications/new", applicationJson, null, "status");
+			if(!code.equals("200"))
+				return "redirect:/applications/new-error";
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
