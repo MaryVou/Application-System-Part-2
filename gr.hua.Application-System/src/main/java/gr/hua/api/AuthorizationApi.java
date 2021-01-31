@@ -24,7 +24,7 @@ public class AuthorizationApi {
 		
 		HttpURLConnection con = null;
 
-		URL url = new URL("http://localhost:8080/authenticate");
+		URL url = new URL("http://themelicompany.cloudns.cl/authenticate");
 		con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Content-Type", "application/json; utf-8");

@@ -45,27 +45,18 @@ public class ApplicationController {
 	public String processApplicationForm(@ModelAttribute Application application) {
 		
 		String applicationJson = null;
-		
-		if(application.getCategory()!=null) {
-			applicationJson = "{\"type\":\""
-								+ application.getType().toLowerCase()+"\","
+	
+		applicationJson = "{\"type\":\""
+								+ application.getType()+"\","
 								+ "\"category\":\""
-								+ application.getCategory().toLowerCase()+"\","
+								+ application.getCategory()+"\","
 								+ "\"start_date\":\""
 								+ application.getStart_date()+"\","
 								+ "\"last_date\":\""
 								+ application.getLast_date()+"\"}";
-		}
-		else {
-			applicationJson = "{\"type\":\""
-					+ application.getType().toLowerCase()+"\","
-					+ "\"start_date\":\""
-					+ application.getStart_date()+"\","
-					+ "\"last_date\":\""
-					+ application.getLast_date()+"\"}";
-		}
+		
 		try {
-			String code = (String) requestApi.postRequest("http://localhost:8080/api/applications/new", applicationJson, null, "status");
+			String code = (String) requestApi.postRequest("http://themelicompany.cloudns.cl/api/applications/new", applicationJson, null, "status");
 			if(!code.equals("200"))
 				return "redirect:/applications/new-error";
 		} catch (IOException e) {
@@ -96,7 +87,7 @@ public class ApplicationController {
 		else
 			model.addAttribute("not_authorized", false);
 		try {
-			List<Object> applications = requestApi.getRequestMultiple("http://localhost:8080/api/applications/view", Application.class);
+			List<Object> applications = requestApi.getRequestMultiple("http://themelicompany.cloudns.cl/api/applications/view", Application.class);
 			model.addAttribute("allApplications", applications);
 		} catch (InstantiationException e) {
 			e.printStackTrace();

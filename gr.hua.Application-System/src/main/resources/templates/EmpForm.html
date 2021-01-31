@@ -26,16 +26,16 @@
 				<tr for="typeofpermit" style = "font-size: 15px;"> <td>TYPE OF WORK PERMIT : </td>
 				<td> <select name="typeofpermit" th:field="*{type}" th:required="required">
 				  <option value="regular">REGULAR</option>
-				  <option value="special">SPECIAL PURPOSE</option>
-				  <option value="sickleave">SICK LEAVE</option>
+				  <option value="special purpose">SPECIAL PURPOSE</option>
+				  <option value="recovery">SICK LEAVE</option>
 				  <option value="strike">STRIKE</option>
 				</select> </td></tr>
 				<p>If you choose special purpose please choose the category of your permit:</p> 
 				<tr id="categoryField" style = "font-size: 15px;"> <td>CATEGORY: </td><td> <select name="typeofpermit" th:field="*{category}">
 				  <option value=""></option>
-				  <option value="regular">PARENTAL</option>
-				  <option value="special">STUDENT</option>
-				  <option value="sickleave">AGRICULTURAL</option>
+				  <option value="parental">PARENTAL</option>
+				  <option value="student">STUDENT</option>
+				  <option value="agricultural">AGRICULTURAL</option>
 				</select> </td></tr>
 				<tr style = "font-size: 15px;"> <td> BEGIN DATE : </td> <td style = "font-size: 25px;"> <input type = "date" id="start" name="firstday" value="2020-01-01" th:attr="min=${localdate},max=${lastDay}" th:field="*{start_date}" th:required="required"> </td> </tr>	
 				<tr style = "font-size: 15px;"> <td> LAST DATE : </td> <td style = "font-size: 25px;"> <input type = "date" id="start" name="lastday" value="2020-01-01" th:attr="min=${localdate},max=${lastDay}" th:field="*{last_date}" th:required="required"> </td> </tr>

@@ -32,7 +32,7 @@ public class EmployeeController {
 			model.addAttribute("not_authorized", true);
 		else
 			model.addAttribute("not_authorized", false);
-		Employee profile = (Employee) requestApi.getRequest("http://localhost:8080/api/employees/profile", Employee.class);
+		Employee profile = (Employee) requestApi.getRequest("http://themelicompany.cloudns.cl/api/employees/profile", Employee.class);
 		model.addAttribute("pr", profile);
 		model.addAttribute("updates", new ChangeableInfo());
 		//if profile == null -> error page
@@ -42,11 +42,11 @@ public class EmployeeController {
 	@PostMapping("/profile")
 	public String updatePhone(@ModelAttribute ChangeableInfo updates) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		if(!updates.getPhone().equals(""))
-			requestApi.postRequest("http://localhost:8080/api/employees/profile/update-phone", "{\"phone\":\""+updates.getPhone()+"\"}" ,null, "status");
+			requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-phone", "{\"phone\":\""+updates.getPhone()+"\"}" ,null, "status");
 		if(!updates.getAddress().equals(""))
-			requestApi.postRequest("http://localhost:8080/api/employees/profile/update-address", "{\"address\":\""+updates.getAddress()+"\"}" ,null, "status");
+			requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-address", "{\"address\":\""+updates.getAddress()+"\"}" ,null, "status");
 		if(!updates.getPassword().equals(""))
-			requestApi.postRequest("http://localhost:8080/api/employees/profile/update-password", "{\"password\":\""+updates.getPassword()+"\"}" ,null, "status");
+			requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-password", "{\"password\":\""+updates.getPassword()+"\"}" ,null, "status");
 		return "redirect:/profile";
 	}
 	
@@ -56,7 +56,7 @@ public class EmployeeController {
 			model.addAttribute("not_authorized", true);
 		else
 			model.addAttribute("not_authorized", false);
-		List<Object> contacts = requestApi.getRequestMultiple("http://localhost:8080/api/employees/contact", Contact.class);
+		List<Object> contacts = requestApi.getRequestMultiple("http://themelicompany.cloudns.cl/api/employees/contact", Contact.class);
 		model.addAttribute("contacts", contacts);
 		return "Contact";
 	}
