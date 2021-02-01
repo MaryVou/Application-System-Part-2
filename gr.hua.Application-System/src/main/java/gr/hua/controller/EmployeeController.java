@@ -28,8 +28,10 @@ public class EmployeeController {
 	
 	@GetMapping("/profile")
 	public String retrieveProfile(Model model) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		if(requestApi.getJwt()==null) 
+		if(requestApi.getJwt()==null) {
 			model.addAttribute("not_authorized", true);
+			return "redirect:/login";
+		}
 		else
 			model.addAttribute("not_authorized", false);
 		Employee profile = (Employee) requestApi.getRequest("http://themelicompany.cloudns.cl/api/employees/profile", Employee.class);
@@ -41,19 +43,24 @@ public class EmployeeController {
 	
 	@PostMapping("/profile")
 	public String updatePhone(@ModelAttribute ChangeableInfo updates) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		if(!updates.getPhone().equals(""))
-			requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-phone", "{\"phone\":\""+updates.getPhone()+"\"}" ,null, "status");
-		if(!updates.getAddress().equals(""))
-			requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-address", "{\"address\":\""+updates.getAddress()+"\"}" ,null, "status");
-		if(!updates.getPassword().equals(""))
-			requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-password", "{\"password\":\""+updates.getPassword()+"\"}" ,null, "status");
-		return "redirect:/profile";
+		if(requestApi.getJwt()!=null) {
+			if(!updates.getPhone().equals(""))
+				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-phone", "{\"phone\":\""+updates.getPhone()+"\"}" ,null, "status");
+			if(!updates.getAddress().equals(""))
+				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-address", "{\"address\":\""+updates.getAddress()+"\"}" ,null, "status");
+			if(!updates.getPassword().equals(""))
+				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-password", "{\"password\":\""+updates.getPassword()+"\"}" ,null, "status");
+			return "redirect:/profile";
+		}
+		return "redirect:/login";
 	}
 	
 	@GetMapping("/contacts")
 	public String retrieveContacts(Model model) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		if(requestApi.getJwt()==null) 
+		if(requestApi.getJwt()==null) { 
 			model.addAttribute("not_authorized", true);
+			return "redirect:/login";
+		}
 		else
 			model.addAttribute("not_authorized", false);
 		List<Object> contacts = requestApi.getRequestMultiple("http://themelicompany.cloudns.cl/api/employees/contact", Contact.class);

@@ -66,8 +66,10 @@ public class HomeController {
 	
 	@GetMapping("/index")
 	public String welcomePage(Model model) {
-		if(requestApi.getJwt()==null) 
+		if(requestApi.getJwt()==null) { 
 			model.addAttribute("not_authorized", true);
+			return "redirect:/login";
+		}
 		else
 			model.addAttribute("not_authorized", false);
 		return "Welcomepage";
