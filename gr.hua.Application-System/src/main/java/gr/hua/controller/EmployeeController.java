@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,43 +28,37 @@ public class EmployeeController {
 	private RequestApi requestApi;
 	
 	@GetMapping("/profile")
-	public String retrieveProfile(Model model) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		if(requestApi.getJwt()==null) {
-			model.addAttribute("not_authorized", true);
+	public String retrieveProfile(Model model, @CookieValue("token") String token) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		
+		if(token == "")
 			return "redirect:/login";
-		}
-		else
-			model.addAttribute("not_authorized", false);
-		Employee profile = (Employee) requestApi.getRequest("http://themelicompany.cloudns.cl/api/employees/profile", Employee.class);
+		
+		Employee profile = (Employee) requestApi.getRequest("http://themelicompany.cloudns.cl/api/employees/profile", token, Employee.class);
 		model.addAttribute("pr", profile);
 		model.addAttribute("updates", new ChangeableInfo());
-		//if profile == null -> error page
 		return "Profile";
 	}
 	
 	@PostMapping("/profile")
-	public String updatePhone(@ModelAttribute ChangeableInfo updates) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		if(requestApi.getJwt()!=null) {
+	public String updatePhone(@ModelAttribute ChangeableInfo updates, @CookieValue("token") String token) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		if(token != "") {
 			if(!updates.getPhone().equals(""))
-				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-phone", "{\"phone\":\""+updates.getPhone()+"\"}" ,null, "status");
+				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-phone", token, "{\"phone\":\""+updates.getPhone()+"\"}" ,null, "status");
 			if(!updates.getAddress().equals(""))
-				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-address", "{\"address\":\""+updates.getAddress()+"\"}" ,null, "status");
+				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-address", token, "{\"address\":\""+updates.getAddress()+"\"}" ,null, "status");
 			if(!updates.getPassword().equals(""))
-				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-password", "{\"password\":\""+updates.getPassword()+"\"}" ,null, "status");
+				requestApi.postRequest("http://themelicompany.cloudns.cl/api/employees/profile/update-password", token, "{\"password\":\""+updates.getPassword()+"\"}" ,null, "status");
 			return "redirect:/profile";
 		}
 		return "redirect:/login";
 	}
 	
 	@GetMapping("/contacts")
-	public String retrieveContacts(Model model) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		if(requestApi.getJwt()==null) { 
-			model.addAttribute("not_authorized", true);
+	public String retrieveContacts(Model model, @CookieValue("token") String token) throws IOException, ParseException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		if(token == "") 
 			return "redirect:/login";
-		}
-		else
-			model.addAttribute("not_authorized", false);
-		List<Object> contacts = requestApi.getRequestMultiple("http://themelicompany.cloudns.cl/api/employees/contact", Contact.class);
+		
+		List<Object> contacts = requestApi.getRequestMultiple("http://themelicompany.cloudns.cl/api/employees/contact", token, Contact.class);
 		model.addAttribute("contacts", contacts);
 		return "Contact";
 	}

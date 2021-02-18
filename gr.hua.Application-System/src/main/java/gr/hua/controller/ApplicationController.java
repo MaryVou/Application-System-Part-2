@@ -12,6 +12,7 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,14 +33,11 @@ public class ApplicationController {
 	private RequestApi requestApi;
 	
 	@GetMapping("/applications/new")
-	public String showApplicationForm(Model model) {
-		if(requestApi.getJwt()==null) {
-			model.addAttribute("not_authorized", true);
+	public String showApplicationForm(Model model, @CookieValue("token") String token) {
+
+		if(token == "") 
 			return "redirect:/login";
-		}
-		else {
-			model.addAttribute("not_authorized", false);
-		}
+
 		model.addAttribute("app", new Application());
 		model.addAttribute("localDate", LocalDate.now());
 		model.addAttribute("lastDay", LocalDate.now().with(lastDayOfYear()));
@@ -47,8 +45,8 @@ public class ApplicationController {
 	}
 	
 	@RequestMapping(value={"/applications/new","/applications/new-error"} ,method=RequestMethod.POST)
-	public String processApplicationForm(@ModelAttribute Application application) {
-		if(requestApi.getJwt()!=null) {
+	public String processApplicationForm(@ModelAttribute Application application, @CookieValue("token") String token) {
+		if(token != "") {
 			
 			String applicationJson = null;
 		
@@ -62,7 +60,7 @@ public class ApplicationController {
 									+ application.getLast_date()+"\"}";
 			
 			try {
-				String code = (String) requestApi.postRequest("http://themelicompany.cloudns.cl/api/applications/new", applicationJson, null, "status");
+				String code = (String) requestApi.postRequest("http://themelicompany.cloudns.cl/api/applications/new", token, applicationJson, null, "status");
 				if(!code.equals("200"))
 					return "redirect:/applications/new-error";
 			} catch (IOException e) {
@@ -76,14 +74,11 @@ public class ApplicationController {
 	}
 	
 	@GetMapping("/applications/new-error")
-	public String showApplicationFormWithError(Model model) {
-		if(requestApi.getJwt()==null) {
-			model.addAttribute("not_authorized", true);
+	public String showApplicationFormWithError(Model model, @CookieValue("token") String token) {
+		
+		if(token == "") 
 			return "redirect:/login";
-		}
-		else {
-			model.addAttribute("not_authorized", false);
-		}
+		
 		model.addAttribute("error",true);
 		model.addAttribute("app", new Application());
 		model.addAttribute("localDate", LocalDate.now());
@@ -92,15 +87,13 @@ public class ApplicationController {
 	}
 	
 	@GetMapping("/applications/view")
-	public String showApplications(Model model) {
-		if(requestApi.getJwt()==null) {
-			model.addAttribute("not_authorized", true);
+	public String showApplications(Model model, @CookieValue("token") String token) {
+		
+		if(token == "") 
 			return "redirect:/login";
-		}
-		else 
-			model.addAttribute("not_authorized", false);
+		
 		try {
-			List<Object> applications = requestApi.getRequestMultiple("http://themelicompany.cloudns.cl/api/applications/view", Application.class);
+			List<Object> applications = requestApi.getRequestMultiple("http://themelicompany.cloudns.cl/api/applications/view", token, Application.class);
 			model.addAttribute("allApplications", applications);
 		} catch (InstantiationException e) {
 			e.printStackTrace();

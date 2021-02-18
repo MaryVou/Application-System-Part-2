@@ -23,17 +23,7 @@ import net.minidev.json.parser.ParseException;
 @Service
 public class RequestApi {
 
-	private JwtToken jwt;
-
-	public JwtToken getJwt() {
-		return jwt;
-	}
-
-	public void setJwt(JwtToken jwt) {
-		this.jwt = jwt;
-	}
-
-	public Object getRequest(String GetUrl, Class entity)
+	public Object getRequest(String GetUrl, String token, Class entity)
 			throws IOException, ParseException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
@@ -44,7 +34,7 @@ public class RequestApi {
 		con.setRequestMethod("GET");
 		con.setRequestProperty("Content-Type", "application/json");
 		con.setRequestProperty("Accept", "application/json");
-		con.setRequestProperty("Authorization", "Bearer " + getJwt().getToken());
+		con.setRequestProperty("Authorization", "Bearer " + token);
 		con.setDoOutput(true);
 
 		int code = con.getResponseCode();
@@ -67,7 +57,7 @@ public class RequestApi {
 		return null;
 	}
 	
-	public List<Object> getRequestMultiple(String GetUrl, Class entity)
+	public List<Object> getRequestMultiple(String GetUrl, String token, Class entity)
 			throws IOException, ParseException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
@@ -78,7 +68,7 @@ public class RequestApi {
 		con.setRequestMethod("GET");
 		con.setRequestProperty("Content-Type", "application/json");
 		con.setRequestProperty("Accept", "application/json");
-		con.setRequestProperty("Authorization", "Bearer " + getJwt().getToken());
+		con.setRequestProperty("Authorization", "Bearer " + token);
 		con.setDoOutput(true);
 
 		int code = con.getResponseCode();
@@ -101,7 +91,7 @@ public class RequestApi {
 		return null;
 	}
 
-	public Object postRequest(String postUrl, String jsonInputString, Class entity, String returnValue) throws IOException, ParseException {
+	public Object postRequest(String postUrl, String token, String jsonInputString, Class entity, String returnValue) throws IOException, ParseException {
 
 		HttpURLConnection con = null;
 
@@ -110,7 +100,7 @@ public class RequestApi {
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Content-Type", "application/json; utf-8");
 		con.setRequestProperty("Accept", "application/json");
-		con.setRequestProperty("Authorization", "Bearer " + getJwt().getToken());
+		con.setRequestProperty("Authorization", "Bearer " + token);
 		con.setDoOutput(true);
 
 		try (OutputStream os = con.getOutputStream()) {

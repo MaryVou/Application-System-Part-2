@@ -2,10 +2,15 @@ package gr.hua.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,55 +29,61 @@ import net.minidev.json.parser.ParseException;
 
 @Controller
 public class HomeController {
-	
+
 	@Autowired
 	public AuthorizationApi authorizeApi;
-	
+
 	@Autowired
 	public RequestApi requestApi;
-	
+
 	@GetMapping("/login")
 	public String showLogin(Model model) {
 		model.addAttribute("user", new JwtRequest());
 		return "LoginPage";
 	}
-	
-	@RequestMapping(value={"/login","/login-error"} ,method=RequestMethod.POST)
-	public String authorize(@ModelAttribute JwtRequest authenticationRequest) throws IOException, ParseException {
+
+	@RequestMapping(value = { "/login", "/login-error" }, method = RequestMethod.POST)
+	public String authorize(@ModelAttribute JwtRequest authenticationRequest, HttpServletResponse response) throws IOException, ParseException {
 		JwtToken jwt = authorizeApi.getAuthorized(authenticationRequest);
-		if(jwt==null)
+		if (jwt == null)
 			return "redirect:/login-error";
-		requestApi.setJwt(jwt);
+		Cookie cookie = new Cookie("token", jwt.getToken());
+		cookie.setPath("/");
+		cookie.setSecure(false);
+		cookie.setHttpOnly(false);
+		response.addCookie(cookie);
 		return "redirect:/index";
 	}
-	
+
 	@GetMapping("/login-error")
-	  public String loginError(Model model) {
-	    model.addAttribute("loginError", true);
-	    model.addAttribute("user", new JwtRequest());
-	    return "LoginPage";
-	  }
-	
+	public String loginError(Model model) {
+		model.addAttribute("loginError", true);
+		model.addAttribute("user", new JwtRequest());
+		return "LoginPage";
+	}
+
 	@GetMapping("/logout")
-	public String logout(){
-		requestApi.setJwt(null);
+	public String logout(HttpServletResponse response) {
+		Cookie cookie = new Cookie("token", null);
+		cookie.setPath("/");
+		cookie.setSecure(false);
+		cookie.setHttpOnly(false);
+		response.addCookie(cookie);
 		return "redirect:/login";
 	}
-	
+
 	@GetMapping("/")
 	public String root() {
 		return "redirect:/login";
 	}
-	
+
 	@GetMapping("/index")
-	public String welcomePage(Model model) {
-		if(requestApi.getJwt()==null) { 
-			model.addAttribute("not_authorized", true);
+	public String welcomePage(Model model, @CookieValue("token") String token) {
+		
+		if (token == "") 
 			return "redirect:/login";
-		}
-		else
-			model.addAttribute("not_authorized", false);
+		
 		return "Welcomepage";
 	}
-	
+
 }

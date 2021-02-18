@@ -7,17 +7,13 @@
 
 </head>
 <body>
-<div th:if="${not_authorized == true}">
-	<h1>You have to login to view this page!</h1>
-</div>
-<div th:if="${not_authorized == false}">
 	<h1><a href="/logout" style="text-decoration: none; color:#D84424;font-size: 15px; text-align:right;">&#10060 LOGOUT</a></h1>
 	<div align =  "center">
         
         <div class="menu">
         <h2 style="color:#064714;"> Employee Form </h1>
         
-        <p th:if="${error}">Something went wrong! Please try again!</p>  
+        <p th:if="${error}" style="color:red">Something went wrong! Please try again!</p>  
 		
 		<form th:action="@{/applications/new}" method = "post" th:object="${app}">
 			<table>
@@ -46,7 +42,6 @@
 		</form>
         </div>
 	</div>
-</div>
   
 </body>
 </html>

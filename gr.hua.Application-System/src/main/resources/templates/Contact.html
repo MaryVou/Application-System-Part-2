@@ -8,10 +8,6 @@
 
 </head>
 <body>
-<div th:if="${not_authorized == true}">
-	<h1>You have to login to view this page!</h1>
-</div>
-<div th:if="${not_authorized == false}">
 		<h1><a href="/logout" style="text-decoration: none; color:#D84424;font-size: 15px; text-align:right;">&#10060 LOGOUT</a></h1>
 		<div align="center">
         	<div class="appview">
@@ -44,6 +40,6 @@
                       </form>
 				</div>
               </div>
-</div>
+
 </body>
 </html>
